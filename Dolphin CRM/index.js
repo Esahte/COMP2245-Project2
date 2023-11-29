@@ -12,6 +12,8 @@ $(document).ready(function () {
     $('body').on('click', function (e) {
 
         const targetClass = $(e.target).attr('class');
+        const targetId = $(e.target).attr('id');
+        const targetType = $(e.target).attr('type');
 
         if (targetClass === 'no_refresh') {
             e.preventDefault();
@@ -96,9 +98,20 @@ $(document).ready(function () {
                 data: {
                     type: type
                 }
-            }).done(response => {
-                requestContactInfo(response)
-            }).fail(() => alert('There was a problem with the request.'));
+            }).done(response => requestContactInfo(response))
+                .fail(() => alert('There was a problem with the request.'));
+        } else if (targetId === 'addNote') {
+            e.preventDefault();
+            let comment = $('#comment').val();
+            let contactName = $(e.target).attr('value');
+
+            $.ajax(`contact_info.php?contactName=${contactName}`, {
+                method: 'POST',
+                data: {
+                    comment: comment
+                }
+            }).done(response => requestContactInfo(response))
+                .fail(() => alert('There was a problem with the request.'));
         }
     });
 });

@@ -322,6 +322,10 @@ select[name="role"] {
     cursor: text;
 }
 
+#role {
+    cursor: pointer;
+}
+
 #assigned_to, #type, #title {
     cursor: pointer;
 }
@@ -372,12 +376,10 @@ select[name="role"] {
 #contactInfo {
     background-color: #ffffff;
     padding: 1rem 2rem;
-    display: grid;
-    grid-template-rows: 1fr 2fr 4fr;
-    grid-gap: 1rem;
 }
 
 #contactInfo > div:first-child {
+    margin-bottom: 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -391,13 +393,15 @@ select[name="role"] {
 }
 
 #contactInfo > div:first-child > div:first-child img {
-    width: 13%;
+    margin-top: 2px;
+    width: 15%;
     height: auto;
     float: left;
 }
 
 .cInfo {
     margin: 0;
+    line-height: 1.5;
 }
 
 #contactInfo button[value="Support"]:hover {
@@ -436,6 +440,7 @@ select[name="role"] {
 }
 
 #contactInfo > div:nth-child(2) {
+    margin-bottom: 1.5rem;
     display: grid;
     grid-template: repeat(2, 1fr) / repeat(2, 1fr);
     border: 2px solid #ebedef;

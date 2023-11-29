@@ -12,22 +12,21 @@ $updated_at = date("Y-m-d H:i:s");
 $created_at = date("Y-m-d H:i:s");
 $userId = $_SESSION['id'];
 
-if ($comment) {
-    $sql = $conn->exec("UPDATE Contacts SET updated_at = '$updated_at' WHERE CONCAT(title, ' ', firstname, ' ', lastname)  LIKE '%$contactName%'");
-    $sql = $conn->exec("INSERT INTO notes (contact_id, comment, created_by, created_at) VALUES ('$contactName', '$comment', '$userId', '$created_at')");
-} else if ($assigned_to) {
-    $sql = $conn->exec("UPDATE Contacts SET assigned_to = '$assigned_to', updated_at = '$updated_at' WHERE CONCAT(title, ' ', firstname, ' ', lastname)  LIKE '%$contactName%'");
-} else if ($type) {
-    $sql = $conn->exec("UPDATE Contacts SET type = '$type', updated_at = '$updated_at' WHERE CONCAT(title, ' ', firstname, ' ', lastname)  LIKE '%$contactName%'");
-}
-
-
 $sql = $conn->prepare("SELECT contacts.id, CONCAT(Contacts.title, ' ', Contacts.firstname, ' ', Contacts.lastname) AS fullName, Contacts.email, Contacts.company, contacts.type, Contacts.telephone, Contacts.created_at, Contacts.updated_at, CONCAT(user2.firstname, ' ', user2.lastname) AS assigned_to, CONCAT(user1.firstname, ' ', user1.lastname) AS created_by 
 FROM Contacts JOIN users user1 ON Contacts.created_by = user1.id JOIN users user2 ON Contacts.assigned_to = user2.id WHERE CONCAT(Contacts.title, ' ', Contacts.firstname, ' ', Contacts.lastname) LIKE :contactName");
 $sql->execute(['contactName' => "%$contactName%"]);
 $contact = $sql->fetch(PDO::FETCH_ASSOC);
 
 $contactId = $contact['id'];
+if ($comment) {
+    $sql = $conn->exec("UPDATE Contacts SET updated_at = '$updated_at' WHERE CONCAT(title, ' ', firstname, ' ', lastname)  LIKE '%$contactName%'");
+    $sql = $conn->exec("INSERT INTO notes (contact_id, comment, created_by, created_at) VALUES ('$contactId', '$comment', '$userId', '$created_at')");
+} else if ($assigned_to) {
+    $sql = $conn->exec("UPDATE Contacts SET assigned_to = '$assigned_to', updated_at = '$updated_at' WHERE CONCAT(title, ' ', firstname, ' ', lastname)  LIKE '%$contactName%'");
+} else if ($type) {
+    $sql = $conn->exec("UPDATE Contacts SET type = '$type', updated_at = '$updated_at' WHERE CONCAT(title, ' ', firstname, ' ', lastname)  LIKE '%$contactName%'");
+}
+
 $stmt = $conn->prepare("SELECT CONCAT(users.firstname, ' ', users.lastname) AS fullName, notes.comment, notes.created_at FROM notes JOIN users ON notes.created_by = users.id WHERE notes.contact_id = :contactId");
 $stmt->execute(['contactId' => $contactId]);
 $notes = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -103,7 +102,7 @@ $notes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             about <?= explode(" ", $contact['fullName'])[1] ?></strong></label>
                     <textarea style="display: block" name="comment" id="comment" cols="40" rows="10"
                               placeholder="Enter details here" required></textarea>
-                    <button id="addNote" type="submit">Add Note</button>
+                    <button id="addNote" type="submit" value="<?= $contactName ?>">Add Note</button>
                 </form>
             </div>
         </div>
