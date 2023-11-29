@@ -10,7 +10,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <div class="info">
     <div class="viewHead">
         <h2>Users</h2>
-        <button><img src="img/plus.svg" alt=""><a class="no_refresh" href="new_user.php">Add User</a></button>
+        <button><img src="img/add_black_24dp.svg" alt=""><a class="no_refresh" href="new_user.php">Add User</a></button>
     </div>
     <div class="table">
         <table id="user_table">
@@ -28,7 +28,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <th scope="row"><?= $user['fullName'] ?></th>
                     <td><?= $user['email'] ?></td>
                     <td><?= $user['role'] ?></td>
-                    <td><?= $user['created_at'] ?></td>
+                    <td><?= date('Y-m-d h:i', strtotime($user['created_at'])) ?></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>

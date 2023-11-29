@@ -1,23 +1,195 @@
-window.addEventListener('load', () => {
-    console.log('loaded')
-    document.querySelectorAll('.no_refresh').forEach(link =>{
-        console.log(link)
-        link.addEventListener('click', async e => {
-            e.preventDefault();
-            const page = e.target.getAttribute('href');
+$(document).ready(function () {
+    $(window).on('popstate', function () {
+        const page = history.state.page;
+        const filename = page + '.php';
 
+        // Load the page and put its contents in the main element.
+        requestMainContent(filename).then(r => $('#result').load(r));
+    });
+
+    console.log(history.state);
+
+    $('body').on('click', function (e) {
+
+        const targetClass = $(e.target).attr('class');
+
+        if (targetClass === 'no_refresh') {
+            e.preventDefault();
+            const page = $(e.target).attr('href');
             const stateObj = {page: formatForUrl(page)};
             history.pushState(stateObj, null, formatForUrl(page));
 
-            await requestContent(page);
-        });
+            // Load the page and put its contents in the main element.
+            requestMainContent(page).then(r => $('#homeResult').load(r));
 
-        window.addEventListener('popstate', async () => {
-            const page = history.state.page;
-            const filename = page + '.php';
+            $(window).on('popstate', function () {
+                const page = history.state.page;
+                const filename = page + '.php';
 
-            // load the page and put its contents in the main element.
-            await requestContent(filename);
-        });
+                // Load the page and put its contents in the main element.
+                requestMainContent(filename).then(r => $('#homeResult').load(r));
+            });
+        } else if (targetClass === 'contactInfo') {
+            e.preventDefault();
+            const page = $(e.target).attr('href');
+            const stateObj = {page: formatForUrl(page)};
+            history.pushState(stateObj, null, formatForUrl(page));
+
+            const contactName = $(e.target).attr('id');
+            console.log(contactName);
+
+            $.ajax(`contact_info.php?contactName=${contactName}`, {
+                method: 'GET'
+            }).done(response => requestContactInfo(response))
+                .fail(() => alert('There was a problem with the request.'));
+
+            $(window).on('popstate', function () {
+                const page = history.state.page;
+                const filename = page + '.php';
+
+                // Load the page and put its contents in the main element.
+                requestContactInfo(filename).then(r => $('#result').load(r));
+            });
+        } else if (targetClass === 'cont_types') {
+            e.preventDefault();
+            const page = $(e.target).attr('href');
+            const stateObj = {page: formatForUrl(page)};
+            history.pushState(stateObj, null, formatForUrl(page));
+
+            const filter = $(e.target).attr('id');
+
+            $.ajax(`contacts.php?filter=${filter}`, {
+                method: 'GET'
+            }).done(response => requestHomeContent(response))
+                .fail(() => alert('There was a problem with the request.'));
+
+            removeActiveClass();
+            $(e.target).parent().addClass('active');
+
+            $(window).on('popstate', function () {
+                const page = history.state.page;
+                const filename = page + '.php';
+
+                // Load the page and put its contents in the main element.
+                requestHomeContent(filename);
+
+                removeActiveClass();
+                $('#nav-' + page).parent().addClass('active');
+            });
+        } else if (targetClass === 'assigned_to_me') {
+            let assigned_to = $(e.target).attr('id');
+            let contactName = $(e.target).attr('value');
+
+            $.ajax(`contact_info.php?contactName=${contactName}`, {
+                method: 'POST',
+                data: {
+                    assigned_to: assigned_to
+                }
+            }).done(response => requestContactInfo(response))
+                .fail(() => alert('There was a problem with the request.'));
+        } else if (targetClass === 'switch') {
+            let type = $(e.target).attr('value');
+            let contactName = $(e.target).attr('id');
+
+            $.ajax(`contact_info.php?contactName=${contactName}`, {
+                method: 'POST',
+                data: {
+                    type: type
+                }
+            }).done(response => {
+                requestContactInfo(response)
+            }).fail(() => alert('There was a problem with the request.'));
+        }
     });
 });
+
+
+// window.addEventListener('load', () => {
+//     window.addEventListener('popstate', async () => {
+//         const page = history.state.page;
+//         const filename = page + '.php';
+//
+//         // load the page and put its contents in the main element.
+//         await requestMainContent(filename);
+//     });
+//     console.log(history.state)
+//     document.querySelector('body').addEventListener('click', async e => {
+//         e.preventDefault();
+//         if (e.target.getAttribute('class') === 'no_refresh') {
+//             const page = e.target.getAttribute('href');
+//
+//             const stateObj = {page: formatForUrl(page)};
+//             history.pushState(stateObj, null, formatForUrl(page));
+//
+//             await requestMainContent(page);
+//
+//             window.addEventListener('popstate', async () => {
+//                 const page = history.state.page;
+//                 const filename = page + '.php';
+//
+//                 // load the page and put its contents in the main element.
+//                 await requestMainContent(filename);
+//             });
+//         } else if (e.target.getAttribute('class') === 'contactInfo') {
+//             e.preventDefault();
+//             const page = e.target.getAttribute("href");
+//             const stateObj = {page: formatForUrl(page)};
+//             history.pushState(stateObj, null, formatForUrl(page));
+//
+//             const contactId = e.target.getAttribute('id');
+//             console.log(contactId)
+//
+//             try {
+//                 const response = await fetch(`contact_info.php?contactId=${contactId}`);
+//                 if (!response.ok) {
+//                     throw new Error('There was a problem with the request.');
+//                 }
+//
+//                 const content = await response.text();
+//                 await requestContactInfo(content);
+//             } catch (error) {
+//                 alert(error.message);
+//             }
+//             window.addEventListener('popstate', async () => {
+//                 const page = history.state.page;
+//                 const filename = page + '.php';
+//
+//                 // load the page and put its contents in the main element.
+//                 await requestContactInfo(filename);
+//             });
+//         } else if (e.target.getAttribute('class') === 'cont_types') {
+//             e.preventDefault();
+//             const page = e.target.getAttribute("href");
+//             const stateObj = {page: formatForUrl(page)};
+//             history.pushState(stateObj, null, formatForUrl(page));
+//
+//             const filter = e.target.getAttribute('id');
+//
+//             try {
+//                 const response = await fetch(`contacts.php?filter=${filter}`);
+//                 if (!response.ok) {
+//                     throw new Error('There was a problem with the request.');
+//                 }
+//
+//                 const content = await response.text();
+//                 requestHomeContent(content);
+//             } catch (error) {
+//                 alert(error.message);
+//             }
+//
+//             removeActiveClass();
+//             e.target.parentElement.classList.add('active');
+//
+//             window.addEventListener('popstate', async () => {
+//                 const page = history.state.page;
+//                 const filename = page + '.php';
+//
+//                 // load the page and put its contents in the main element.
+//                 requestHomeContent(filename);
+//
+//                 removeActiveClass();
+//                 document.getElementById('nav-' + page).parentElement.classList.add('active');
+//             });
+//         }
+//     });
+// });
