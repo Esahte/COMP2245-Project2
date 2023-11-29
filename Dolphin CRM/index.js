@@ -13,7 +13,7 @@ $(document).ready(function () {
 
         const targetClass = $(e.target).attr('class');
         const targetId = $(e.target).attr('id');
-        const targetType = $(e.target).attr('type');
+        // const targetType = $(e.target).attr('type');
 
         if (targetClass === 'no_refresh') {
             e.preventDefault();
