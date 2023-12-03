@@ -4,7 +4,7 @@ session_start();
 
 <nav>
     <ul>
-        <li><img src="img/home_black_24dp.svg" alt=""><a class="no_refresh" id="home" href="home.php">Home</a></li>
+        <li><img src="img/home_black_24dp.svg" alt=""><a id="home" href="index.php">Home</a></li>
         <li><img src="img/account_circle_black_24dp.svg" alt=""><a class="no_refresh" id="newContact"
                                                                    href="new_contact.php">New
                 Contact</a></li>

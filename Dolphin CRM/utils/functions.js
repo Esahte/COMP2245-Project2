@@ -30,7 +30,9 @@ const requestMainContent = (content) => $('#results').load(content);
  *
  * @param contactInfo
  */
-const requestContactInfo = (contactInfo) => $('#results').html(contactInfo);
+const requestContactInfo = (contactInfo) => {
+    $('#results').html(contactInfo)
+};
 
 const removeActiveClass = () => $('.active').removeClass('active');
 

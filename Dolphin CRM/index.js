@@ -1,35 +1,36 @@
 $(document).ready(function () {
-    $(window).on('popstate', function () {
-        const page = history.state.page;
-        const filename = page + '.php';
-
-        // Load the page and put its contents in the main element.
-        requestMainContent(filename).then(r => $('#result').load(r));
-    });
-
-    console.log(history.state);
-
     $('body').on('click', function (e) {
-
         const targetClass = $(e.target).attr('class');
         const targetId = $(e.target).attr('id');
         // const targetType = $(e.target).attr('type');
 
-        if (targetClass === 'no_refresh') {
-            e.preventDefault();
+        if (targetId === 'home') {
             const page = $(e.target).attr('href');
             const stateObj = {page: formatForUrl(page)};
             history.pushState(stateObj, null, formatForUrl(page));
-
-            // Load the page and put its contents in the main element.
-            requestMainContent(page).then(r => $('#homeResult').load(r));
 
             $(window).on('popstate', function () {
                 const page = history.state.page;
                 const filename = page + '.php';
 
                 // Load the page and put its contents in the main element.
-                requestMainContent(filename).then(r => $('#homeResult').load(r));
+                requestMainContent(filename);
+            });
+        } else if (targetClass === 'no_refresh') {
+            e.preventDefault();
+            const page = $(e.target).attr('href');
+            const stateObj = {page: formatForUrl(page)};
+            history.pushState(stateObj, null, formatForUrl(page));
+
+            // Load the page and put its contents in the main element.
+            requestMainContent(page);
+
+            $(window).on('popstate', function () {
+                const page = history.state.page;
+                const filename = page + '.php';
+
+                // Load the page and put its contents in the main element.
+                requestMainContent(filename);
             });
         } else if (targetClass === 'contactInfo') {
             e.preventDefault();
@@ -50,14 +51,10 @@ $(document).ready(function () {
                 const filename = page + '.php';
 
                 // Load the page and put its contents in the main element.
-                requestContactInfo(filename).then(r => $('#result').load(r));
+                requestContactInfo(filename);
             });
         } else if (targetClass === 'cont_types') {
             e.preventDefault();
-            const page = $(e.target).attr('href');
-            const stateObj = {page: formatForUrl(page)};
-            history.pushState(stateObj, null, formatForUrl(page));
-
             const filter = $(e.target).attr('id');
 
             $.ajax(`contacts.php?filter=${filter}`, {
@@ -67,17 +64,6 @@ $(document).ready(function () {
 
             removeActiveClass();
             $(e.target).parent().addClass('active');
-
-            $(window).on('popstate', function () {
-                const page = history.state.page;
-                const filename = page + '.php';
-
-                // Load the page and put its contents in the main element.
-                requestHomeContent(filename);
-
-                removeActiveClass();
-                $('#nav-' + page).parent().addClass('active');
-            });
         } else if (targetClass === 'assigned_to_me') {
             let assigned_to = $(e.target).attr('id');
             let contactName = $(e.target).attr('value');
