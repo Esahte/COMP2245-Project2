@@ -1,23 +1,29 @@
-<div class="info">
-    <div class="viewHead">
-        <h1>Dashboard</h1>
-        <button><img src="img/add_black_24dp.svg" alt=""><a class="no_refresh" href="new_contact.php">Add Contact</a></button>
-    </div>
-    <div class="table">
-        <div>
-            <div id="filter">
-                <img src="img/filter_alt_black_24dp.svg" alt="">
-                <h4>Filter By:</h4>
-                <ul>
-                    <li class="active"><a class="cont_types" id="all" href="contacts.php">All</a></li>
-                    <li><a class="cont_types" id="sales" href="contacts.php">Sales Leads</a></li>
-                    <li><a class="cont_types" id="support" href="contacts.php">Support</a></li>
-                    <li><a class="cont_types" id="assigned" href="contacts.php">Assigned To Me</a></li>
-                </ul>
-            </div>
-            <div id="homeResult">
-                <?php include 'contacts.php' ?>
-            </div>
-        </div>
-    </div>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dolphin CRM</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&family=Roboto:wght@300;400;700&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" media="screen"/>
+    <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
+    <script src="utils/functions.js" charset="utf-8"></script>
+    <script src="index.js" charset="utf-8"></script>
+</head>
+<body>
+<header id="head">
+    <img src="img/dolphin.png" alt="">
+    <p>Dolphin CRM</p>
+</header>
+<main class="main">
+    <section id="nav">
+        <?php include 'home_nav.php'; ?>
+    </section>
+    <section id="results">
+        <?php include 'dashboard.php'; ?>
+    </section>
+</main>
+</body>
+</html>

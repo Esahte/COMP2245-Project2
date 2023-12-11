@@ -97,7 +97,7 @@ $notes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <?php endforeach; ?>
             </div>
             <div>
-                <form action="contact_info.php" method="post">
+                <form action="view_contact_info.php" method="post">
                     <label style="display: block" for="comment"><strong>Add a note
                             about <?= explode(" ", $contact['fullName'])[1] ?></strong></label>
                     <textarea style="display: block" name="comment" id="comment" cols="40" rows="10"
@@ -106,7 +106,7 @@ $notes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </form>
             </div>
         </div>
-    </div id="contactInfo">
+    </div>
 </div>
 
 

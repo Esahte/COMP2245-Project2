@@ -6,7 +6,7 @@ session_start();
     <?php if ($_SESSION['role'] === 'Admin'): ?>
         <h2>New User</h2>
         <div id="new_user">
-            <form method="post" action="insert_user.php">
+            <form method="post" action="users_insert.php">
                 <div class="first_name">
                     <label for="first_name">First Name</label>
                     <input type="text" id="first_name" name="first_name" class="form-control" placeholder="e.g. John"

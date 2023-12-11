@@ -12,7 +12,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <div class="info">
     <h1>New Contact</h1>
     <div id="new-contact">
-        <form action="insert_contact.php" method="post">
+        <form action="contact_insert.php" method="post">
             <div class="title">
                 <label for="title">Title</label>
                 <select name="title" id="title">

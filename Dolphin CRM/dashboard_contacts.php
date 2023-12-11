@@ -37,7 +37,7 @@ $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <td><span class="<?= str_replace(' ', '_', $contact['type']) ?>"><?= $contact['type'] ?></span><a
                         id="<?= $contact['fullName'] ?>"
                         class="contactInfo"
-                        href="contact_info.php">View</a>
+                        href="view_contact_info.php">View</a>
             </td>
         </tr>
     <?php endforeach; ?>

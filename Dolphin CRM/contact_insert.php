@@ -37,10 +37,10 @@ if ($result) {
     }
     $sql = "UPDATE Contacts SET" . implode(',', $setClauses) . " WHERE email = '$email'";
     $conn->exec($sql);
-    echo "<script>alert('Contact updated successfully!');window.location.href='index.php';</script>";
+    echo "<script>alert('Contact updated successfully!');window.location.href='home.php';</script>";
 } else {
     $sql = $conn->exec("INSERT INTO Contacts (title, firstname, lastname, email, telephone, company, type, assigned_to, created_by, created_at, updated_at) VALUES ('$title', '$firstname', '$lastname', '$email', '$telephone', '$company', '$type', '$assigned_to', '$created_by', '$created_at', '$updated_at')");
-    echo "<script>alert('Contact created successfully!');window.location.href='index.php';</script>";
+    echo "<script>alert('Contact created successfully!');window.location.href='home.php';</script>";
 }
 
 

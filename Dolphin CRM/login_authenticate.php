@@ -13,7 +13,7 @@ if ($user && password_verify($password, $user['password'])) {
     session_start();
     $_SESSION['id'] = $user['id'];
     $_SESSION['role'] = $user['role'];
-    header('Location: index.php');
+    header('Location: home.php');
 } else {
     header('Location: login.php');
 }

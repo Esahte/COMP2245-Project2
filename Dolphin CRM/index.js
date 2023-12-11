@@ -1,22 +1,30 @@
 $(document).ready(function () {
+    $(window).on('load', function () {
+        const page = 'dashboard.php';
+        const stateObj = {page: formatForUrl(page)};
+        history.replaceState(stateObj, null, formatForUrl(page));
+    })
     $('body').on('click', function (e) {
         const targetClass = $(e.target).attr('class');
         const targetId = $(e.target).attr('id');
         // const targetType = $(e.target).attr('type');
 
-        if (targetId === 'home') {
-            const page = $(e.target).attr('href');
-            const stateObj = {page: formatForUrl(page)};
-            history.pushState(stateObj, null, formatForUrl(page));
-
-            $(window).on('popstate', function () {
-                const page = history.state.page;
-                const filename = page + '.php';
-
-                // Load the page and put its contents in the main element.
-                requestMainContent(filename);
-            });
-        } else if (targetClass === 'no_refresh') {
+        // if (targetId === 'home') {
+        //     e.preventDefault();
+        //     const page = $(e.target).attr('href');
+        //     const stateObj = {page: formatForUrl(page)};
+        //     console.log(page);
+        //     history.pushState(stateObj, null, formatForUrl(page));
+        //
+        //     $(window).on('popstate', function () {
+        //         const page = history.state.page;
+        //         const filename = page + '.php';
+        //
+        //         // Load the page and put its contents in the main element.
+        //         requestMainContent(filename);
+        //     });
+        // } else
+        if (targetClass === 'no_refresh') {
             e.preventDefault();
             const page = $(e.target).attr('href');
             const stateObj = {page: formatForUrl(page)};
@@ -41,7 +49,7 @@ $(document).ready(function () {
             const contactName = $(e.target).attr('id');
             console.log(contactName);
 
-            $.ajax(`contact_info.php?contactName=${contactName}`, {
+            $.ajax(`view_contact_info.php?contactName=${contactName}`, {
                 method: 'GET'
             }).done(response => requestContactInfo(response))
                 .fail(() => alert('There was a problem with the request.'));
@@ -57,7 +65,7 @@ $(document).ready(function () {
             e.preventDefault();
             const filter = $(e.target).attr('id');
 
-            $.ajax(`contacts.php?filter=${filter}`, {
+            $.ajax(`dashboard_contacts.php?filter=${filter}`, {
                 method: 'GET'
             }).done(response => requestHomeContent(response))
                 .fail(() => alert('There was a problem with the request.'));
@@ -68,7 +76,7 @@ $(document).ready(function () {
             let assigned_to = $(e.target).attr('id');
             let contactName = $(e.target).attr('value');
 
-            $.ajax(`contact_info.php?contactName=${contactName}`, {
+            $.ajax(`view_contact_info.php?contactName=${contactName}`, {
                 method: 'POST',
                 data: {
                     assigned_to: assigned_to
@@ -79,7 +87,7 @@ $(document).ready(function () {
             let type = $(e.target).attr('value');
             let contactName = $(e.target).attr('id');
 
-            $.ajax(`contact_info.php?contactName=${contactName}`, {
+            $.ajax(`view_contact_info.php?contactName=${contactName}`, {
                 method: 'POST',
                 data: {
                     type: type
@@ -91,7 +99,7 @@ $(document).ready(function () {
             let comment = $('#comment').val();
             let contactName = $(e.target).attr('value');
 
-            $.ajax(`contact_info.php?contactName=${contactName}`, {
+            $.ajax(`view_contact_info.php?contactName=${contactName}`, {
                 method: 'POST',
                 data: {
                     comment: comment
@@ -139,7 +147,7 @@ $(document).ready(function () {
 //             console.log(contactId)
 //
 //             try {
-//                 const response = await fetch(`contact_info.php?contactId=${contactId}`);
+//                 const response = await fetch(`view_contact_info.php?contactId=${contactId}`);
 //                 if (!response.ok) {
 //                     throw new Error('There was a problem with the request.');
 //                 }
@@ -165,7 +173,7 @@ $(document).ready(function () {
 //             const filter = e.target.getAttribute('id');
 //
 //             try {
-//                 const response = await fetch(`contacts.php?filter=${filter}`);
+//                 const response = await fetch(`dashboard_contacts.php?filter=${filter}`);
 //                 if (!response.ok) {
 //                     throw new Error('There was a problem with the request.');
 //                 }

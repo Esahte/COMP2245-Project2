@@ -10,7 +10,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <div class="info">
     <div class="viewHead">
         <h2>Users</h2>
-        <button><img src="img/add_black_24dp.svg" alt=""><a class="no_refresh" href="new_user.php">Add User</a></button>
+        <button><a class="no_refresh" href="users_new.php"><img src="img/add_black_24dp.svg" alt="">Add User</a></button>
     </div>
     <div class="table">
         <table id="user_table">

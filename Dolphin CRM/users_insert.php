@@ -11,4 +11,4 @@ $created_at = date('Y-m-d h:i:s');
 
 $sql = $conn->exec("INSERT INTO users (firstname, lastname, password, email, role, created_at) VALUES('$firstname', '$lastname', '$password', '$email', '$role', '$created_at')");
 
-echo "<script>alert('User created successfully!');window.location.href='index.php';</script>";
+echo "<script>alert('User created successfully!');window.location.href='home.php';</script>";

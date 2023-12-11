@@ -7,9 +7,7 @@ $sql = $conn->prepare("SELECT * FROM users");
 $sql->execute();
 $users = $sql->fetchAll(PDO::FETCH_ASSOC);
 
-if (!$users) {
-    include_once 'initialUsers.php';
-}
+(!$users) && include_once 'login_initialUsers.php';
 ?>
 
 <!DOCTYPE html>
@@ -32,7 +30,7 @@ if (!$users) {
 </header>
 
 <main>
-    <form action="authenticate.php" method="post">
+    <form action="login_authenticate.php" method="post">
         <div>
             <label style="display: none" for="email">Email:</label>
             <input type="text" name="email" id="email" placeholder="Email address" required>
